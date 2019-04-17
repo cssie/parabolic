@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>抛物线</title>
+    <style>
+        .userInput {
+            position: fixed;
+            top: 50%;
+            right: 10%;
+            ;
+        }
+
+        .result {
+            width: 400px;
+            word-wrap:break-word
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="1000" height="700"></canvas>
+    <div class="userInput">
+        <textarea>(1,6),(3,28),(200,200),(400,40)</textarea>
+        <button onclick="tofunction()">生成抛物线</button>
+        <div class="result"></div>
+    </div>
+
+
+    <script src="./toFunction.js"></script>
+    <script src="./canvas.js"></script>
+    <script>
+        function tofunction() {
+            var regex = /\((.+?)\)/g;
+            var inputarr = [];
+            context.clearRect(0, 0, 1000, 700);
+            drawLines();
+            if (document.querySelector('textarea').value) {
+                var arr = document.querySelector('textarea').value.match(regex);
+                arr.forEach(function (item, index) {
+                    var x = Number(item.split(',')[0].substr(1, item.split(',')[0].length))
+                    var y = Number(item.split(',')[1].substr(0, item.split(',')[1].length - 1))
+                    drawPoint(x, y);
+                    inputarr.push({
+                        x: x,
+                        y: y
+                    })
+                })
+            }
+            var parabolic = polyfit(inputarr)
+            drawFunction(arr.length, parabolic)
+        }
+    </script>
+</body>
+
+</html>
